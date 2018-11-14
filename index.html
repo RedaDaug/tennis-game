@@ -1,0 +1,38 @@
+<html>
+	<h1>My first game</h1>
+	<canvas id="gameCanvas" width="800" height="600"></canvas>
+	
+	<script>
+	var canvas;
+	var canvasContext; 
+	var ballX = 0;
+		window.onload = function(){
+			canvas = document.getElementById('gameCanvas');
+			canvasContext = canvas.getContext('2d');
+
+			var movesPerSecond = 30;
+			setInterval(function(){
+				draw();
+				ballMove();
+			}, 1000/movesPerSecond);
+			
+		}
+		
+		function ballMove(){
+			ballX = ballX + 10;
+		}
+		
+		function draw() {
+			canvasContext.fillStyle = 'black'; 
+			canvasContext.fillRect(0,0,canvas.width,canvas.height);
+			canvasContext.fillStyle = 'green'; 
+			canvasContext.fillRect(ballX,0,canvas.width/20,canvas.height/20);
+			
+		}
+ 
+	</script>
+	
+</html>
+
+
+
