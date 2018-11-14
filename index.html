@@ -6,7 +6,25 @@
 	var canvas;
 	var canvasContext; 
 	var ballX = 0;
+	var ballY = 0;
 	var ballSpeedX = 10;
+	var ballSpeedY = 4;
+	var paddle1Y = 250;
+	const PADDLE_HEIGHT = 100;
+		
+		function calculateMousePos(evt){
+			var rect = canvas.getBoundingClientRect();
+			var root = document.documentElement;
+			var mouseX = evt.clientX - rect.left - root.scrollLeft;
+			var mouseY = evt.clientY - rect.top - root.scrollTop;
+			return {
+				x:mouseX,
+				y:mouseY
+			};
+			
+			
+		}
+		
 		window.onload = function(){
 			canvas = document.getElementById('gameCanvas');
 			canvasContext = canvas.getContext('2d');
@@ -17,27 +35,49 @@
 				ballMove();
 			}, 1000/movesPerSecond);
 			
+			canvas.addEventListener('mousemove',
+					function(evt) {
+						var mousePos = calculateMousePos(evt);
+						paddle1Y = mousePos.y-(PADDLE_HEIGHT/2);				
+			});
+			
 		}
 		
 		function ballMove(){
 			ballX = ballX + ballSpeedX;
+			ballY = ballY + ballSpeedY;
 			if (ballX > canvas.width-10){
 				ballSpeedX = -ballSpeedX;				
 			}
-			if (ballX < 10){
+			if (ballX < 4){
 				ballSpeedX = -ballSpeedX;				
+			}
+			if (ballY > canvas.height){
+				ballSpeedY = -ballSpeedY;				
+			}
+			if (ballY < 4){
+				ballSpeedY = -ballSpeedY;				
 			}
 		}
 		
 		function draw() {
-			canvasContext.fillStyle = 'black'; 
-			canvasContext.fillRect(0,0,canvas.width,canvas.height);
-			canvasContext.fillStyle = 'white'; 
-			canvasContext.fillRect(0,270,10,100);
-			canvasContext.fillStyle = 'red'; 
+			drawRect(0,0,canvas.width,canvas.height,'black');
+			drawRect(0,paddle1Y,10,PADDLE_HEIGHT,'white');
+			drawCircle(ballX,ballY,10,'red');		
+		}
+		
+		function drawRect(rectX,rectY,rectWidth,rectHeight,rectColor){
+			canvasContext.fillStyle = rectColor; 
+			canvasContext.fillRect(rectX,rectY,rectWidth,rectHeight);
+			
+		}
+		
+		function drawCircle(circleX, circleY, radius, drawColor){
+			canvasContext.fillStyle = drawColor; 
 			canvasContext.beginPath();
-			canvasContext.arc(ballX,100,10,0,Math.PI*2,true);
-			canvasContext.fill();			
+			canvasContext.arc(circleX,circleY,radius,0,Math.PI*2,true);
+			canvasContext.fill();	
+			
 		}
  
 	</script>
